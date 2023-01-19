@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'restfull_api.apps.RestfullApiConfig'
+    'restfull_api.apps.RestfullApiConfig',
+    'cube_history.apps.CubeHistoryConfig',
 ]
 
 MIDDLEWARE = [
