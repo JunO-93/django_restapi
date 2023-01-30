@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>input form</title>
+
+    <!-- 템플릿으로 전달된 json 데이터 파싱 -->
+    {% if result %}
+        {{ result | json_script:'jsonData'}}
+        name is :
+        <script type = "text/javascript">
+            var placeData = JSON.parse(document.getElementById('jsonData').textContent);
+            for (var key1 in placeData){
+                var jsonData = JSON.parse(placeData[key1])
+                for (var key2 in jsonData){
+                    document.write(key2+" : " + jsonData[key2]+"<br>")
+                }
+
+            }
+        </script>
+    {% endif %}
+</head>
+<body>
+    <form action="selectCubeData/" method="post" >
+        <!-- 보안상의 문제로 작성 -->
+        {% csrf_token %}
+        <div>
+            <label for="count">데이터 수</label>
+            <input type="text" name="count">
+        </div>
+        <div>
+            <label for="date">날짜</label>
+            <input type="text" name="date">
+        </div>                        
+        <!-- <div>
+            <label for="count">데이터 수</label>
+            <input type="text" name="cursor">
+        </div>                         -->
+        <br>
+        <input type="submit" value ="전송">
+    </form>    
+</body>
+</html>

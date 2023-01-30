@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'restfull_api.apps.RestfullApiConfig',
     'cube_history.apps.CubeHistoryConfig',
+    
 ]
 
 MIDDLEWARE = [
