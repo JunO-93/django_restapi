@@ -3,7 +3,7 @@
     src: url(../font/Maplestory\ Light.ttf) format('truetype');
 }
 
-#submit_form{
+body{
     font-size: 20px;
     font-family: maplestory;    
 }

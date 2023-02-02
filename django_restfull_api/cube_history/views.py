@@ -150,8 +150,11 @@ def selectCubeData(request):
                 setData.save()                   
         except Exception as e:            
             logger.debug(e)
-        
-        result = {"count":f"{json_cubeHis['count']}", "date" : date}
+        try:
+            cube_count = json_cubeHis['count']
+        except KeyError:
+            cube_count =0        
+        result = {"count":f"{cube_count}", "date" : date}
         
     # return HttpResponse("데이터 INSERT 완료.")
     return render(request, 'html/returnpage.html', result, status=200)
