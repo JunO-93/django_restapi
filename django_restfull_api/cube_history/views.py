@@ -13,11 +13,6 @@ from django.views import generic
 import json
 import pandas as pd
 
-# Create your views here.
-# class DataViewSet(viewsets.ModelViewSet):
-#     queryset = data.objects.all()
-#     serializer_class = DataSerializer
-
 # 로깅세팅
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -31,14 +26,13 @@ logger.addHandler(stream_handler)
 def valueInputSet(request):
     return render(request, 'html/valueInput.html') 
 
-def selectCubeData(request):
-    
+def selectCubeData(request):    
     if request.method =='POST': 
    
         try:
             count = request.POST['count']
-            date = request.POST['date']                        
-
+            date = request.POST['date']
+            
             cubeHis = apiCall(count, date)
 
             #json_cubeHis
@@ -153,9 +147,15 @@ def selectCubeData(request):
                     after_additional_potential_options_value_2 = after_additional_potential_options_value_2,
                     after_additional_potential_options_value_3 = after_additional_potential_options_value_3,
                 )
-                setData.save()
-    
+                setData.save()                   
         except Exception as e:            
-            logger.debug(e)      
+            logger.debug(e)
         
-    return HttpResponse(cubeHis)
+        result = {"count":f"{json_cubeHis['count']}", "date" : date}
+        
+    # return HttpResponse("데이터 INSERT 완료.")
+    return render(request, 'html/returnpage.html', result, status=200)
+    
+
+def viewCubeInfo(request):
+    return render(request, 'html/viewCubeInfo.html')
