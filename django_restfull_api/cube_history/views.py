@@ -13,7 +13,7 @@ from django.views import generic
 import json
 import pandas as pd
 
-# 로깅세팅
+# 로그세팅
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
@@ -23,24 +23,24 @@ stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
 
+# 처음 데이터 입력 화면
 def valueInputSet(request):
     return render(request, 'html/valueInput.html') 
 
+# API 데이터 조회 및 DB INSERT
 def selectCubeData(request):    
-    if request.method =='POST': 
-   
+    if request.method =='POST':    
         try:
+            #사용자가 입력한 변수
             count = request.POST['count']
-            date = request.POST['date']
-            
+            date = request.POST['date']            
+            #API 호출
             cubeHis = apiCall(count, date)
-
-            #json_cubeHis
+            #JSON 형식으로 로드
             json_cubeHis = json.loads(cubeHis)
 
             #데이터 파싱            
-            json_cube_histories = json_cubeHis['cube_histories']
-
+            json_cube_histories = json_cubeHis['cube_histories']            
             for i in range(len(json_cube_histories)):                
                 id = json_cube_histories[i]['id']
                 character_name = json_cube_histories[i]['character_name']
@@ -147,7 +147,8 @@ def selectCubeData(request):
                     after_additional_potential_options_value_2 = after_additional_potential_options_value_2,
                     after_additional_potential_options_value_3 = after_additional_potential_options_value_3,
                 )
-                setData.save()                   
+                setData.save()
+
         except Exception as e:            
             logger.debug(e)
         try:
@@ -156,9 +157,32 @@ def selectCubeData(request):
             cube_count =0        
         result = {"count":f"{cube_count}", "date" : date}
         
-    # return HttpResponse("데이터 INSERT 완료.")
     return render(request, 'html/returnpage.html', result, status=200)
-    
 
+# 큐브별 사용량 
 def viewCubeInfo(request):
-    return render(request, 'html/viewCubeInfo.html')
+    cube_object = data.objects.all()
+
+    black_cube_count = len(data.objects.filter(cube_type='블랙 큐브'))
+    red_cube_count = len(data.objects.filter(cube_type='레드 큐브'))
+    addi_cube_count = len(data.objects.filter(cube_type='에디셔널 큐브'))
+    questionable_cube_count = len(data.objects.filter(cube_type='수상한 큐브'))
+    questionable_addi_cube_count = len(data.objects.filter(cube_type='수상한 에디셔널 큐브'))
+    master_cube_count = len(data.objects.filter(cube_type='장인의 큐브'))
+    karma_master_cube_count = len(data.objects.filter(cube_type='카르마 장인의 큐브'))
+    g_commander_cube_count = len(data.objects.filter(cube_type='명장의 큐브'))
+    karma_g_commander_cube_count = len(data.objects.filter(cube_type='카르마 명장의 큐브'))
+    
+    result = {
+        "black_cube_count" : black_cube_count,
+        "red_cube_count" : red_cube_count,
+        "addi_cube_count" : addi_cube_count,
+        "questionable_cube_count" : questionable_cube_count,
+        "questionable_addi_cube_count" : questionable_addi_cube_count,
+        "master_cube_count" : master_cube_count,
+        "karma_master_cube_count" : karma_master_cube_count,
+        "g_commander_cube_count" : g_commander_cube_count,
+        "karma_g_commander_cube_count" : karma_g_commander_cube_count,
+    }
+
+    return render(request, 'html/viewCubeInfo.html',result, status=200)
