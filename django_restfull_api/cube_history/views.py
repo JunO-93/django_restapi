@@ -12,16 +12,16 @@ from django.views import generic
 
 import json
 import pandas as pd
+import logging as log
 
 # 로그세팅
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+# logger = logging.getLogger()
+# logger.setLevel(logging.DEBUG)
 
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
 # log 출력
-stream_handler = logging.StreamHandler()
-stream_handler.setFormatter(formatter)
-logger.addHandler(stream_handler)
+# stream_handler = logging.StreamHandler()
+# logger.addHandler(stream_handler)
 
 # 처음 데이터 입력 화면
 def valueInputSet(request):
@@ -150,7 +150,7 @@ def selectCubeData(request):
                 setData.save()
 
         except Exception as e:            
-            logger.debug(e)
+            log.debug(e)
         try:
             cube_count = json_cubeHis['count']
         except KeyError:
