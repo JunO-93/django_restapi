@@ -6,12 +6,13 @@ import io, os
 import json
 import requests
 import pandas as pd
+import logging as log
 
+
+#.env 파일에서 변수 가져오기
 SECRET_KEY = getattr(settings, 'SECRET_KEY', None)
 
 def apiCall(count : int , date : str, cursor = ''):
-    #.env 파일에서 변수 가져오기
-    # serviceKey = os.environ.get("SECRET_KEY")
     serviceKey = SECRET_KEY
     url = f'https://public.api.nexon.com/openapi/maplestory/v1/cube-use-results?count={count}&date={date}&cursor={cursor}'  
     headers = {
@@ -25,5 +26,5 @@ def apiCall(count : int , date : str, cursor = ''):
         response = requests.get(url, headers = headers)        
         contents = response.text
     except Exception as e:
-        print(e)    
+        log.info(e)    
     return contents
